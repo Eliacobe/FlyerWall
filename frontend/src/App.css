@@ -927,3 +927,71 @@ main {
     position: static;
   }
 }
+
+@media (max-width: 640px) {
+  .app {
+    padding: 1rem;
+  }
+
+  header {
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 1.25rem;
+  }
+
+  header h1 {
+    font-size: 1.3rem;
+    order: 1;
+    flex-shrink: 0;
+  }
+
+  .auth-section {
+    order: 2;
+    /* margin-left: auto keeps it right-aligned on the same row as h1 */
+  }
+
+  .search-form {
+    order: 3;
+    width: 100%;
+    max-width: 100%;
+    flex: none;
+  }
+
+  .upload-section {
+    order: 4;
+  }
+
+  .cal-wrapper {
+    order: 5;
+  }
+
+  .auth-username {
+    display: none;
+  }
+
+  .event-card {
+    width: 160px;
+  }
+
+  .event-image {
+    height: 220px;
+  }
+
+  .event-info {
+    padding: 0.6rem;
+  }
+
+  .event-info h3 {
+    font-size: 0.85rem;
+    margin: 0 0 0.25rem 0;
+  }
+
+  .event-date,
+  .event-venue {
+    font-size: 0.75rem;
+  }
+
+  .poster-board {
+    min-height: 200vh;
+  }
+}
