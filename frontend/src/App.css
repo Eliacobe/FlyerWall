@@ -542,7 +542,7 @@ main {
 .poster-board {
   position: relative;
   width: 100%;
-  min-height: 240vh;
+  min-height: 160vh;
 }
 
 .event-card {

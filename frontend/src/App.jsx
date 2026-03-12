@@ -19,7 +19,7 @@ function idToSeed(id) {
 function cardStyle(id, zIndex, index, total) {
   const seed = idToSeed(id);
   // Spread cards evenly across board height, with a small random jitter
-  const base = (index / Math.max(total - 1, 1)) * 75;
+  const base = (index / Math.max(total - 1, 1)) * 45;
   const jitter = (seededRand(seed, 0) - 0.5) * 12;
   const top  = Math.max(1, base + jitter + 3);
   const left = seededRand(seed, 1) * 62 + 2;
