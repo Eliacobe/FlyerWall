@@ -266,6 +266,18 @@ function App() {
             disabled={uploading}
             style={{ display: 'none' }}
           />
+          <label htmlFor="camera-upload" className="upload-button camera-button" title="Take a photo">
+            📷
+          </label>
+          <input
+            id="camera-upload"
+            type="file"
+            accept="image/*"
+            capture="environment"
+            onChange={handleUpload}
+            disabled={uploading}
+            style={{ display: 'none' }}
+          />
         </div>
         <form className="search-form" onSubmit={handleSearch}>
           <input
