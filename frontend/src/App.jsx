@@ -18,9 +18,11 @@ function idToSeed(id) {
 
 function cardStyle(id, zIndex, index, total) {
   const seed = idToSeed(id);
-  const maxTop = 15 + (index / Math.max(total - 1, 1)) * 60;
-  const top  = seededRand(seed, 0) * maxTop + 2;
-  const left = seededRand(seed, 1) * 68 + 2;
+  // Spread cards evenly across board height, with a small random jitter
+  const base = (index / Math.max(total - 1, 1)) * 75;
+  const jitter = (seededRand(seed, 0) - 0.5) * 12;
+  const top  = Math.max(1, base + jitter + 3);
+  const left = seededRand(seed, 1) * 62 + 2;
   const rot  = (seededRand(seed, 2) - 0.5) * 14;
   return {
     '--card-top':    `${top}%`,
