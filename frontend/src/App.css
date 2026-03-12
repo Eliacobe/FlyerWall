@@ -407,15 +407,6 @@ h1 {
   border-color: #888;
 }
 
-.camera-button {
-  display: none;
-}
-
-@media (max-width: 640px) {
-  .camera-button {
-    display: inline-block;
-  }
-}
 
 main {
   max-width: 100%;
