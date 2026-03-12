@@ -203,7 +203,7 @@ function App() {
   async function handleReviewDiscard() {
     if (pendingEvent) {
       try {
-        await deleteEvent(pendingEvent.id);
+        await deleteEvent(pendingEvent.id, token);
       } catch (err) {
         console.error('Failed to delete discarded event:', err);
       }
