@@ -544,7 +544,7 @@ main {
   background: #1a1a1a;
   border-radius: 6px;
   overflow: hidden;
-  cursor: pointer;
+  cursor: grab;
   transform: rotate(var(--card-rotate));
   transition: transform 0.2s ease, box-shadow 0.2s ease, z-index 0s;
   box-shadow: 4px 6px 20px rgba(0, 0, 0, 0.6);

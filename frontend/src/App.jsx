@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { getEvents, uploadFlyer, deleteEvent, searchEvents, getMyEvents } from './api';
 import ReviewScreen from './ReviewScreen';
 import EventDetail from './EventDetail';
@@ -51,10 +51,62 @@ function App() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [myFlyers, setMyFlyers] = useState(null); // null = not in My Flyers view
   const [myFlyersLoading, setMyFlyersLoading] = useState(false);
+  const [dragPositions, setDragPositions] = useState({});
+  const [draggingId, setDraggingId] = useState(null);
+  const draggingRef = useRef(null);
+  const boardRef = useRef(null);
+  const didDragRef = useRef(false);
 
   useEffect(() => {
     fetchEvents(null);
   }, []);
+
+  useEffect(() => {
+    function onMove(e) {
+      if (!draggingRef.current) return;
+      const { id, startMouseX, startMouseY, startTop, startLeft, boardWidth, boardHeight } = draggingRef.current;
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      if (Math.abs(clientX - startMouseX) > 4 || Math.abs(clientY - startMouseY) > 4) {
+        didDragRef.current = true;
+      }
+      const dx = ((clientX - startMouseX) / boardWidth) * 100;
+      const dy = ((clientY - startMouseY) / boardHeight) * 100;
+      setDragPositions(prev => ({ ...prev, [id]: { top: startTop + dy, left: startLeft + dx } }));
+      if (e.touches) e.preventDefault();
+    }
+    function onUp() {
+      draggingRef.current = null;
+      setDraggingId(null);
+    }
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+    window.addEventListener('touchmove', onMove, { passive: false });
+    window.addEventListener('touchend', onUp);
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onUp);
+      window.removeEventListener('touchmove', onMove);
+      window.removeEventListener('touchend', onUp);
+    };
+  }, []);
+
+  function handleCardPointerDown(e, eventId) {
+    const isTouch = e.touches != null;
+    const clientX = isTouch ? e.touches[0].clientX : e.clientX;
+    const clientY = isTouch ? e.touches[0].clientY : e.clientY;
+    const board = boardRef.current;
+    const card = e.currentTarget;
+    const boardRect = board.getBoundingClientRect();
+    const cardRect = card.getBoundingClientRect();
+    const boardHeight = board.offsetHeight;
+    const boardWidth = board.offsetWidth;
+    const currentTop = ((cardRect.top - boardRect.top) / boardHeight) * 100;
+    const currentLeft = ((cardRect.left - boardRect.left) / boardWidth) * 100;
+    draggingRef.current = { id: eventId, startMouseX: clientX, startMouseY: clientY, startTop: currentTop, startLeft: currentLeft, boardWidth, boardHeight };
+    didDragRef.current = false;
+    setDraggingId(eventId);
+  }
 
   async function fetchEvents(tag) {
     try {
@@ -388,13 +440,23 @@ function App() {
         ) : events.length === 0 ? (
           <p>No events found{activeTag ? ` for "${activeTag}"` : searchInterpretation ? ' for your search' : ''}.</p>
         ) : (
-          <div className="poster-board">
-            {events.map((event, i) => (
+          <div className="poster-board" ref={boardRef}>
+            {events.map((event, i) => {
+              const pos = dragPositions[event.id];
+              const isDragging = draggingId === event.id;
+              const style = {
+                ...cardStyle(event.id, i + 1, i, events.length),
+                ...(pos ? { '--card-top': `${pos.top}%`, '--card-left': `${pos.left}%` } : {}),
+                ...(isDragging ? { zIndex: 99999, transition: 'none', cursor: 'grabbing' } : {}),
+              };
+              return (
               <div
                 key={event.id}
                 className="event-card"
-                style={cardStyle(event.id, i + 1, i, events.length)}
-                onClick={() => setSelectedEvent(event)}
+                style={style}
+                onMouseDown={e => handleCardPointerDown(e, event.id)}
+                onTouchStart={e => handleCardPointerDown(e, event.id)}
+                onClick={() => { if (!didDragRef.current) setSelectedEvent(event); }}
               >
                 <div
                   className="event-image"
@@ -410,7 +472,8 @@ function App() {
                   {event.venue && <p className="event-venue">{event.venue}</p>}
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </main>
