@@ -530,6 +530,13 @@ main {
   color: #fff;
 }
 
+.board-tagline {
+  font-size: 0.9rem;
+  color: #444;
+  margin: 0 0 1.5rem 0;
+  font-style: italic;
+}
+
 .poster-board {
   position: relative;
   width: 100%;

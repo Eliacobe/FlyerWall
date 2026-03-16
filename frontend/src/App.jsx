@@ -435,6 +435,9 @@ function App() {
             <button className="search-interpretation-clear" onClick={handleSearchClear}>Clear search</button>
           </p>
         )}
+        {!loading && events.length > 0 && !searchInterpretation && !activeTag && !selectedDate && (
+          <p className="board-tagline">Check out the events people have pinned — grab a flyer, spread the word.</p>
+        )}
         {loading ? (
           <p>Loading events...</p>
         ) : events.length === 0 ? (
