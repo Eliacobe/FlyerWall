@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import upload from '../middleware/upload.js';
 import { uploadFlyerImage } from '../services/storage.js';
-import { extractFlyerInfo } from '../services/extraction.js';
+import { extractFlyerInfo, validateIsFlyer } from '../services/extraction.js';
 import { requireAuth } from '../middleware/authMiddleware.js';
 import pool from '../db/pool.js';
 
@@ -20,6 +20,12 @@ router.post('/', requireAuth, upload.single('flyer'), async (req, res, next) => 
     const { buffer, mimetype, originalname } = req.file;
 
     try {
+        console.log('  Validating image is a flyer...');
+        const isFlyer = await validateIsFlyer(buffer, mimetype);
+        if (!isFlyer) {
+            return res.status(400).json({ error: "This doesn't look like an event flyer. Please upload a flyer or poster for a specific event." });
+        }
+
         console.log('  Uploading image to Supabase Storage...');
         const imageUrl = await uploadFlyerImage(buffer, originalname, mimetype);
         console.log('  Uploaded:', imageUrl);

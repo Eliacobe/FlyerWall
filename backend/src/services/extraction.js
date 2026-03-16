@@ -28,6 +28,33 @@ Rules:
 - Return ONLY the JSON object. No extra text.`;
 }
 
+export async function validateIsFlyer(imageBuffer, mimetype) {
+    const base64Image = imageBuffer.toString('base64');
+
+    const response = await client.messages.create({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 64,
+        messages: [
+            {
+                role: 'user',
+                content: [
+                    {
+                        type: 'image',
+                        source: { type: 'base64', media_type: mimetype, data: base64Image },
+                    },
+                    {
+                        type: 'text',
+                        text: 'Is this image an event flyer, event poster, or promotional material for a specific event? Reply with only "yes" or "no".',
+                    },
+                ],
+            },
+        ],
+    });
+
+    const answer = response.content[0]?.text?.trim().toLowerCase() || 'no';
+    return answer.startsWith('yes');
+}
+
 export async function extractFlyerInfo(imageBuffer, mimetype) {
     const base64Image = imageBuffer.toString('base64');
 
