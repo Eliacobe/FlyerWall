@@ -960,17 +960,17 @@ main {
 
   .search-form {
     order: 3;
-    width: 100%;
+    flex: 1;
     max-width: 100%;
-    flex: none;
+  }
+
+  .cal-wrapper {
+    order: 3;
   }
 
   .upload-section {
     order: 4;
-  }
-
-  .cal-wrapper {
-    order: 5;
+    width: 100%;
   }
 
   .auth-username {
