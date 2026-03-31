@@ -5,6 +5,7 @@ function EventDetail({ event, onClose, onTagClick }) {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
+        timeZone: 'UTC',
       })
     : null;
 
@@ -12,6 +13,7 @@ function EventDetail({ event, onClose, onTagClick }) {
     ? new Date(event.starts_at).toLocaleTimeString(undefined, {
         hour: '2-digit',
         minute: '2-digit',
+        timeZone: 'UTC',
       })
     : null;
 

@@ -409,7 +409,7 @@ function App() {
                       <p className="my-flyer-title">{event.title || 'Untitled Event'}</p>
                       {event.starts_at && (
                         <p className="my-flyer-date">
-                          {new Date(event.starts_at).toLocaleDateString()}
+                          {new Date(event.starts_at).toLocaleDateString(undefined, { timeZone: 'UTC' })}
                         </p>
                       )}
                     </div>
@@ -469,7 +469,7 @@ function App() {
                   <h3>{event.title || 'Untitled Event'}</h3>
                   {event.starts_at && (
                     <p className="event-date">
-                      {new Date(event.starts_at).toLocaleDateString()}
+                      {new Date(event.starts_at).toLocaleDateString(undefined, { timeZone: 'UTC' })}
                     </p>
                   )}
                   {event.venue && <p className="event-venue">{event.venue}</p>}
