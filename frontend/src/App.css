@@ -537,6 +537,24 @@ main {
   font-style: italic;
 }
 
+.sort-button.active {
+  color: #fff;
+  border-color: #646cff;
+}
+
+.sorted-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.sorted-card {
+  position: static !important;
+  transform: none !important;
+  width: 100% !important;
+  cursor: pointer;
+}
+
 .poster-board {
   position: relative;
   width: 100%;

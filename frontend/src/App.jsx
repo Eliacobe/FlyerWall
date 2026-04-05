@@ -51,6 +51,7 @@ function App() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [myFlyers, setMyFlyers] = useState(null); // null = not in My Flyers view
   const [myFlyersLoading, setMyFlyersLoading] = useState(false);
+  const [sorted, setSorted] = useState(false);
   const [dragPositions, setDragPositions] = useState({});
   const [draggingId, setDraggingId] = useState(null);
   const draggingRef = useRef(null);
@@ -342,6 +343,9 @@ function App() {
           onClear={handleDateClear}
         />
         <div className="auth-section">
+          <button className={`auth-button sort-button${sorted ? ' active' : ''}`} onClick={() => setSorted(s => !s)}>
+            {sorted ? 'Unsort' : 'Sort'}
+          </button>
           {username ? (
             <>
               <span className="auth-username">{username}</span>
@@ -442,6 +446,30 @@ function App() {
           <p>Loading events...</p>
         ) : events.length === 0 ? (
           <p>No events found{activeTag ? ` for "${activeTag}"` : searchInterpretation ? ' for your search' : ''}.</p>
+        ) : sorted ? (
+          <div className="sorted-grid">
+            {events.map((event) => (
+              <div
+                key={event.id}
+                className="event-card sorted-card"
+                onClick={() => setSelectedEvent(event)}
+              >
+                <div
+                  className="event-image"
+                  style={{ backgroundImage: `url(${event.image_url})` }}
+                />
+                <div className="event-info">
+                  <h3>{event.title || 'Untitled Event'}</h3>
+                  {event.starts_at && (
+                    <p className="event-date">
+                      {new Date(event.starts_at).toLocaleDateString(undefined, { timeZone: 'UTC' })}
+                    </p>
+                  )}
+                  {event.venue && <p className="event-venue">{event.venue}</p>}
+                </div>
+              </div>
+            ))}
+          </div>
         ) : (
           <div className="poster-board" ref={boardRef}>
             {events.map((event, i) => {
