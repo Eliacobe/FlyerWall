@@ -56,7 +56,6 @@ router.post('/', async (req, res, next) => {
         const today = new Date().toISOString().slice(0, 10);
         const filters = await parseQuery(query.trim(), today);
 
-        // Build the events query using the extracted filters
         const conditions = [];
         const params = [];
         let paramIdx = 1;

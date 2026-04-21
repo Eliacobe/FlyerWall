@@ -107,7 +107,6 @@ header {
   color: #888;
 }
 
-/* ── Calendar picker ──────────────────────────────────────── */
 
 .cal-wrapper {
   position: relative;
@@ -785,7 +784,6 @@ main {
   margin-top: 1.5rem;
 }
 
-/* ── My Flyers panel ──────────────────────────────────────── */
 
 .my-flyers-overlay {
   position: fixed;
@@ -973,7 +971,6 @@ main {
 
   .auth-section {
     order: 2;
-    /* margin-left: auto keeps it right-aligned on the same row as h1 */
   }
 
   .search-form {

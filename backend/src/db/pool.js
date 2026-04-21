@@ -7,11 +7,11 @@ const pool = new Pool({
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
 });
 
-// Test connection on startup
+// test connection on startup
 pool.query('SELECT 1').then(() => {
-  console.log('✅  PostgreSQL connected');
+  console.log('SQL connected');
 }).catch((err) => {
-  console.error('❌  PostgreSQL connection failed:', err.message);
+  console.error('SQL connection failed:', err.message);
 });
 
 export default pool;

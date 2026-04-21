@@ -25,7 +25,6 @@ export default function CalendarPicker({ selectedDate, onSelect, onClear }) {
   const triggerRef = useRef(null);
   const wrapperRef = useRef(null);
 
-  // Position the popup below the trigger button
   function openPopup() {
     const rect = triggerRef.current.getBoundingClientRect();
     setPopupStyle({
@@ -35,7 +34,6 @@ export default function CalendarPicker({ selectedDate, onSelect, onClear }) {
     setOpen(true);
   }
 
-  // Close when clicking outside
   useEffect(() => {
     function handle(e) {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {

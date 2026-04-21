@@ -7,7 +7,6 @@ import pool from '../db/pool.js';
 
 const router = Router();
 
-// Add uploaded_by column if it doesn't exist yet
 await pool.query(`
     ALTER TABLE events ADD COLUMN IF NOT EXISTS uploaded_by UUID REFERENCES users(id)
 `);

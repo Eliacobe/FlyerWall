@@ -6,7 +6,6 @@ import LoginModal from './LoginModal';
 import CalendarPicker from './CalendarPicker';
 import './App.css';
 
-// Stable pseudo-random from a numeric seed
 function seededRand(seed, salt) {
   const x = Math.sin(seed * 9301 + salt * 49297 + 1) * 233280;
   return x - Math.floor(x);
@@ -18,7 +17,6 @@ function idToSeed(id) {
 
 function cardStyle(id, zIndex, index, total) {
   const seed = idToSeed(id);
-  // Spread cards evenly across board height, with a small random jitter
   const base = (index / Math.max(total - 1, 1)) * 45;
   const jitter = (seededRand(seed, 0) - 0.5) * 12;
   const top  = Math.max(1, base + jitter + 3);
@@ -49,7 +47,7 @@ function App() {
   const [searchInterpretation, setSearchInterpretation] = useState(null);
   const [searching, setSearching] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [myFlyers, setMyFlyers] = useState(null); // null = not in My Flyers view
+  const [myFlyers, setMyFlyers] = useState(null); 
   const [myFlyersLoading, setMyFlyersLoading] = useState(false);
   const [sorted, setSorted] = useState(false);
   const [dragPositions, setDragPositions] = useState({});
@@ -114,7 +112,6 @@ function App() {
       setLoading(true);
       const data = await getEvents(tag ? { tag } : {});
       setEvents(data.data || []);
-      // Only update the full tag list when fetching without a filter
       if (!tag) {
         const tags = [...new Set(
           (data.data || []).flatMap(e => Array.isArray(e.tags) ? e.tags : [])
