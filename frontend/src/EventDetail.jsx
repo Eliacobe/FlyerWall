@@ -1,4 +1,5 @@
-function EventDetail({ event, onClose, onTagClick }) {
+function EventDetail({ event, onClose, onTagClick })
+{
   const dateStr = event.starts_at
     ? new Date(event.starts_at).toLocaleDateString(undefined, {
         weekday: 'long',
@@ -17,7 +18,8 @@ function EventDetail({ event, onClose, onTagClick }) {
       })
     : null;
 
-  return (
+  return
+  (
     <div className="event-detail">
       <div className="detail-image-panel">
         <img src={event.image_url} alt={event.title} className="detail-image" />

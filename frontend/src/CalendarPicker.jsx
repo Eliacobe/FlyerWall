@@ -65,17 +65,22 @@ export default function CalendarPicker({ selectedDate, onSelect, onClear }) {
   const todayKey = toDateKey(today.getFullYear(), today.getMonth(), today.getDate());
   const cells = buildDays();
 
-  function handleDayClick(d) {
+  function handleDayClick(d)
+  {
     const key = toDateKey(viewYear, viewMonth, d);
-    if (key === selectedDate) {
+    if (key === selectedDate)
+    {
       onClear();
-    } else {
+    }
+    else
+    {
       onSelect(key);
     }
     setOpen(false);
   }
 
-  return (
+  return
+  (
     <div className="cal-wrapper" ref={wrapperRef}>
       <button
         ref={triggerRef}

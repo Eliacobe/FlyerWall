@@ -5,7 +5,8 @@ import pool from '../db/pool.js';
 const router = Router();
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
-async function parseQuery(query, today) {
+async function parseQuery(query, today)
+{
     const prompt = `Today's date is ${today}.
 
 The user is searching for events on a flyer board. Parse their natural language query into structured search filters.
@@ -38,18 +39,23 @@ Rules:
     });
 
     const raw = response.content[0]?.text?.trim();
-    try {
+    try
+    {
         return JSON.parse(raw);
-    } catch {
+    }
+    catch
+    {
         const cleaned = raw.replace(/^```json?\n?/, '').replace(/```$/, '').trim();
         return JSON.parse(cleaned);
     }
 }
 
 router.post('/', async (req, res, next) => {
-    try {
-        const { query } = req.body;
-        if (!query?.trim()) {
+    try
+    {
+        const {query} = req.body;
+        if (!query?.trim())
+        {
             return res.status(400).json({ error: 'Query is required' });
         }
 
@@ -60,21 +66,25 @@ router.post('/', async (req, res, next) => {
         const params = [];
         let paramIdx = 1;
 
-        if (filters.q) {
+        if (filters.q)
+        {
             conditions.push(`e.search_tsv @@ plainto_tsquery('english', $${paramIdx++})`);
             params.push(filters.q);
         }
-        if (filters.from) {
+        if (filters.from)
+        {
             conditions.push(`e.starts_at >= $${paramIdx++}`);
             params.push(filters.from);
         }
-        if (filters.to) {
+        if (filters.to)
+        {
             conditions.push(`e.starts_at <= $${paramIdx++}`);
             params.push(filters.to);
         }
 
         let tagJoin = '';
-        if (filters.tag) {
+        if (filters.tag) 
+        {
             tagJoin = `
         JOIN event_tags et ON et.event_id = e.id
         JOIN tags t ON t.id = et.tag_id AND t.name = $${paramIdx++}
@@ -102,14 +112,16 @@ router.post('/', async (req, res, next) => {
       LIMIT 50
     `;
 
-        const { rows } = await pool.query(sql, params);
+        const {rows} = await pool.query(sql, params);
 
         return res.json({
             data: rows,
             interpretation: filters.interpretation || null,
             filters,
         });
-    } catch (err) {
+    } 
+    catch (err) 
+    {
         next(err);
     }
 });

@@ -12,16 +12,19 @@ await pool.query(`
 `);
 
 router.post('/', requireAuth, upload.single('flyer'), async (req, res, next) => {
-    if (!req.file) {
+    if (!req.file)
+    {
         return res.status(400).json({ error: 'No image file provided. Send a multipart field named "flyer".' });
     }
 
-    const { buffer, mimetype, originalname } = req.file;
+    const {buffer, mimetype, originalname } = req.file;
 
-    try {
+    try
+    {
         console.log('  Validating image is a flyer...');
         const isFlyer = await validateIsFlyer(buffer, mimetype);
-        if (!isFlyer) {
+        if (!isFlyer)
+        {
             return res.status(400).json({ error: "This doesn't look like an event flyer. Please upload a flyer or poster for a specific event." });
         }
 
@@ -34,10 +37,12 @@ router.post('/', requireAuth, upload.single('flyer'), async (req, res, next) => 
         let needsReview = false;
         let extractionError = null;
 
-        try {
+        try
+        {
             extracted = await extractFlyerInfo(buffer, mimetype);
             console.log('  Extraction complete:', extracted);
-        } catch (extractionErr) {
+        } catch (extractionErr)
+        {
             console.error('  Extraction failed:', extractionErr);
             needsReview = true;
             extractionError = extractionErr.message;
@@ -46,7 +51,8 @@ router.post('/', requireAuth, upload.single('flyer'), async (req, res, next) => 
         const { title, description, venue, starts_at, price, organiser, tags = [] } = extracted;
 
         const client = await pool.connect();
-        try {
+        try
+        {
             await client.query('BEGIN');
 
             const { rows } = await client.query(
@@ -70,20 +76,24 @@ router.post('/', requireAuth, upload.single('flyer'), async (req, res, next) => 
 
             const event = rows[0];
 
-            if (Array.isArray(tags) && tags.length > 0) {
-                for (const tagName of tags) {
+            if (Array.isArray(tags) && tags.length > 0)
+            {
+                for (const tagName of tags)
+                {
                     const normalised = tagName.toLowerCase().trim();
                     if (!normalised) continue;
 
-                    const { rows: tagRows } = await client.query(
+                    const {rows: tagRows } = await client.query
+                    (
                         `INSERT INTO tags (name) VALUES ($1)
-             ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name
-             RETURNING id`,
+                        ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name
+                        RETURNING id`,
                         [normalised]
                     );
                     const tagId = tagRows[0].id;
 
-                    await client.query(
+                    await client.query
+                    (
                         `INSERT INTO event_tags (event_id, tag_id) VALUES ($1, $2) ON CONFLICT DO NOTHING`,
                         [event.id, tagId]
                     );
@@ -97,13 +107,19 @@ router.post('/', requireAuth, upload.single('flyer'), async (req, res, next) => 
                 event: { ...event, tags },
                 extractionError,
             });
-        } catch (dbErr) {
+        } 
+        catch (dbErr) 
+        {
             await client.query('ROLLBACK');
             throw dbErr;
-        } finally {
+        } 
+        finally 
+        {
             client.release();
         }
-    } catch (err) {
+    } 
+    catch (err) 
+    {
         next(err);
     }
 });

@@ -7,7 +7,7 @@ const pool = new Pool({
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
 });
 
-// test connection on startup
+// test connection
 pool.query('SELECT 1').then(() => {
   console.log('SQL connected');
 }).catch((err) => {

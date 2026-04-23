@@ -8,7 +8,8 @@ const RULES = [
   { label: 'One special character', test: p => /[^A-Za-z0-9]/.test(p) },
 ];
 
-export default function LoginModal({ onAuth, onClose }) {
+export default function LoginModal({ onAuth, onClose })
+{
   const [tab, setTab] = useState('login');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -37,7 +38,8 @@ export default function LoginModal({ onAuth, onClose }) {
     }
   }
 
-  return (
+  return
+  (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={e => e.stopPropagation()}>
         <div className="modal-tabs">

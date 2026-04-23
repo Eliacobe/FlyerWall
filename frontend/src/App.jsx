@@ -6,16 +6,19 @@ import LoginModal from './LoginModal';
 import CalendarPicker from './CalendarPicker';
 import './App.css';
 
-function seededRand(seed, salt) {
+function seededRand(seed, salt)
+{
   const x = Math.sin(seed * 9301 + salt * 49297 + 1) * 233280;
   return x - Math.floor(x);
 }
 
-function idToSeed(id) {
+function idToSeed(id)
+{
   return String(id).split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
 }
 
-function cardStyle(id, zIndex, index, total) {
+function cardStyle(id, zIndex, index, total)
+{
   const seed = idToSeed(id);
   const base = (index / Math.max(total - 1, 1)) * 45;
   const jitter = (seededRand(seed, 0) - 0.5) * 12;
@@ -30,7 +33,8 @@ function cardStyle(id, zIndex, index, total) {
   };
 }
 
-function App() {
+function App()
+{
   const [events, setEvents] = useState([]);
   const [allTags, setAllTags] = useState([]);
   const [activeTag, setActiveTag] = useState(null);
@@ -74,7 +78,8 @@ function App() {
       setDragPositions(prev => ({ ...prev, [id]: { top: startTop + dy, left: startLeft + dx } }));
       if (e.touches) e.preventDefault();
     }
-    function onUp() {
+    function onUp()
+    {
       draggingRef.current = null;
       setDraggingId(null);
     }
@@ -90,7 +95,8 @@ function App() {
     };
   }, []);
 
-  function handleCardPointerDown(e, eventId) {
+  function handleCardPointerDown(e, eventId)
+  {
     const isTouch = e.touches != null;
     const clientX = isTouch ? e.touches[0].clientX : e.clientX;
     const clientY = isTouch ? e.touches[0].clientY : e.clientY;
@@ -107,25 +113,33 @@ function App() {
     setDraggingId(eventId);
   }
 
-  async function fetchEvents(tag) {
-    try {
+  async function fetchEvents(tag)
+  {
+    try
+    {
       setLoading(true);
       const data = await getEvents(tag ? { tag } : {});
       setEvents(data.data || []);
-      if (!tag) {
+      if (!tag)
+      {
         const tags = [...new Set(
           (data.data || []).flatMap(e => Array.isArray(e.tags) ? e.tags : [])
         )].sort();
         setAllTags(tags);
       }
-    } catch (error) {
+    }
+    catch (error)
+    {
       console.error('Failed to fetch events:', error);
-    } finally {
+    }
+    finally 
+    {
       setLoading(false);
     }
   }
 
-  function handleTagClick(tag) {
+  function handleTagClick(tag)
+  {
     const next = tag === activeTag ? null : tag;
     setActiveTag(next);
     setSearchInterpretation(null);
@@ -133,23 +147,30 @@ function App() {
     fetchEvents(next);
   }
 
-  async function handleSearch(e) {
+  async function handleSearch(e)
+  {
     e.preventDefault();
     if (!searchQuery.trim()) return;
-    try {
+    try
+    {
       setSearching(true);
       setActiveTag(null);
       const result = await searchEvents(searchQuery.trim());
       setEvents(result.data || []);
       setSearchInterpretation(result.interpretation || null);
-    } catch (err) {
+    }
+    catch (err)
+    {
       console.error('Search failed:', err);
-    } finally {
+    }
+    finally
+    {
       setSearching(false);
     }
   }
 
-  function handleSearchClear() {
+  function handleSearchClear()
+  {
     setSearchQuery('');
     setSearchInterpretation(null);
     setSelectedDate(null);
@@ -157,56 +178,75 @@ function App() {
     fetchEvents(null);
   }
 
-  async function handleDateSelect(dateKey) {
+  async function handleDateSelect(dateKey)
+  {
     setSelectedDate(dateKey);
     setSearchInterpretation(null);
     setSearchQuery('');
     setActiveTag(null);
-    try {
+    try
+    {
       setLoading(true);
       const data = await getEvents({ date: dateKey });
       setEvents(data.data || []);
-    } catch (err) {
+    }
+    catch (err)
+    {
       console.error('Date filter failed:', err);
-    } finally {
+    }
+    finally
+    {
       setLoading(false);
     }
   }
 
-  function handleDateClear() {
+  function handleDateClear()
+  {
     setSelectedDate(null);
     fetchEvents(null);
   }
 
-  async function openMyFlyers() {
-    try {
+  async function openMyFlyers()
+  {
+    try
+    {
       setMyFlyersLoading(true);
       setMyFlyers([]);
       const data = await getMyEvents(token);
       setMyFlyers(data.data || []);
-    } catch (err) {
+    } 
+    catch (err) 
+    {
       console.error('Failed to load your flyers:', err);
-    } finally {
+    } 
+    finally 
+    {
       setMyFlyersLoading(false);
     }
   }
 
-  function closeMyFlyers() {
+  function closeMyFlyers()
+  {
     setMyFlyers(null);
   }
 
-  async function handleDeleteMyFlyer(id) {
+  async function handleDeleteMyFlyer(id)
+  {
     if (!confirm('Remove this flyer?')) return;
-    try {
+    try
+    {
       await deleteEvent(id, token);
       setMyFlyers(prev => prev.filter(e => e.id !== id));
       setEvents(prev => prev.filter(e => e.id !== id));
-    } catch (err) {
+    } 
+    catch (err)
+    {
       alert(err.message);
     }
   }
 
-  function handleAuth(newToken, newUsername) {
+  function handleAuth(newToken, newUsername)
+  {
     setToken(newToken);
     setUsername(newUsername);
     localStorage.setItem('token', newToken);
@@ -214,49 +254,63 @@ function App() {
     setShowLogin(false);
   }
 
-  function handleLogout() {
+  function handleLogout()
+  {
     setToken(null);
     setUsername(null);
     localStorage.removeItem('token');
     localStorage.removeItem('username');
   }
 
-  async function handleUpload(e) {
+  async function handleUpload(e)
+  {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (!token) {
+    if (!token)
+    {
       setShowLogin(true);
       e.target.value = '';
       return;
     }
 
-    try {
+    try
+    {
       setUploading(true);
       const result = await uploadFlyer(file, token);
       setPendingEvent(result.event);
       setExtractionError(result.extractionError || null);
       e.target.value = '';
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       console.error('Upload failed:', error);
       alert('Upload failed: ' + error.message);
-    } finally {
+    } 
+    finally 
+    {
       setUploading(false);
     }
   }
 
-  async function handleReviewSave() {
+  async function handleReviewSave() 
+  {
     setPendingEvent(null);
     setExtractionError(null);
     await fetchEvents(null);
     setActiveTag(null);
   }
 
-  async function handleReviewDiscard() {
-    if (pendingEvent) {
-      try {
+  async function handleReviewDiscard() 
+  {
+    if (pendingEvent)
+    {
+      try
+      {
         await deleteEvent(pendingEvent.id, token);
-      } catch (err) {
+      }
+      catch (err)
+      {
         console.error('Failed to delete discarded event:', err);
       }
     }
@@ -264,8 +318,10 @@ function App() {
     setExtractionError(null);
   }
 
-  if (selectedEvent) {
-    return (
+  if (selectedEvent)
+    {
+    return
+    (
       <div className="app">
         <header>
           <h1>FlyerWall</h1>
@@ -284,8 +340,10 @@ function App() {
     );
   }
 
-  if (pendingEvent) {
-    return (
+  if (pendingEvent)
+    {
+    return
+    (
       <div className="app">
         <header>
           <h1>FlyerWall</h1>
@@ -302,7 +360,8 @@ function App() {
     );
   }
 
-  return (
+  return
+  (
     <div className="app">
       <header>
         <h1>FlyerWall</h1>

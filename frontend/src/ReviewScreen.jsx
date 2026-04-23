@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { updateEvent } from './api';
 
-function ReviewScreen({ event, extractionError, onSave, onDiscard, discardLabel = 'Discard' }) {
+function ReviewScreen({ event, extractionError, onSave, onDiscard, discardLabel = 'Discard' })
+{
   const [form, setForm] = useState({
     title: event.title || '',
     description: event.description || '',
@@ -19,8 +20,10 @@ function ReviewScreen({ event, extractionError, onSave, onDiscard, discardLabel 
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
 
-  async function handleSave() {
-    try {
+  async function handleSave()
+  {
+    try
+    {
       setSaving(true);
       setError(null);
       const data = { ...form, starts_at: form.starts_at || null };
@@ -33,7 +36,8 @@ function ReviewScreen({ event, extractionError, onSave, onDiscard, discardLabel 
     }
   }
 
-  return (
+  return
+  (
     <div className="review-screen">
       <div className="review-image-panel">
         <img src={event.image_url} alt="Uploaded flyer" className="review-image" />

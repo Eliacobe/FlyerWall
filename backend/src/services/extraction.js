@@ -2,7 +2,8 @@ import Anthropic from '@anthropic-ai/sdk';
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
-function buildExtractionPrompt() {
+function buildExtractionPrompt()
+{
     const today = new Date().toISOString().slice(0, 10);
     return `You are an information extraction assistant. The image provided is an event flyer or poster.
 
@@ -55,7 +56,8 @@ export async function validateIsFlyer(imageBuffer, mimetype) {
     return answer.startsWith('yes');
 }
 
-export async function extractFlyerInfo(imageBuffer, mimetype) {
+export async function extractFlyerInfo(imageBuffer, mimetype)
+{
     const base64Image = imageBuffer.toString('base64');
 
     const response = await client.messages.create({
@@ -85,9 +87,12 @@ export async function extractFlyerInfo(imageBuffer, mimetype) {
     const raw = response.content[0]?.text?.trim();
     if (!raw) throw new Error('Claude returned an empty response');
 
-    try {
+    try
+    {
         return JSON.parse(raw);
-    } catch {
+    }
+    catch
+    {
         const cleaned = raw.replace(/^```json?\n?/, '').replace(/```$/, '').trim();
         return JSON.parse(cleaned);
     }

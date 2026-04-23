@@ -29,4 +29,4 @@ app.use((err, _req, res, _next) => {
   res.status(err.status || 500).json({ error: err.message || 'Internal server error' });
 });
 
-app.listen(PORT, () => console.log(`🚀  Flyer Wall API running on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Flyer Wall API running on http://localhost:${PORT}`));
