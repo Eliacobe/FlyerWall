@@ -320,8 +320,7 @@ function App()
 
   if (selectedEvent)
     {
-    return
-    (
+    return (
       <div className="app">
         <header>
           <h1>FlyerWall</h1>
@@ -342,8 +341,7 @@ function App()
 
   if (pendingEvent)
     {
-    return
-    (
+    return (
       <div className="app">
         <header>
           <h1>FlyerWall</h1>
@@ -360,8 +358,7 @@ function App()
     );
   }
 
-  return
-  (
+  return (
     <div className="app">
       <header>
         <h1>FlyerWall</h1>

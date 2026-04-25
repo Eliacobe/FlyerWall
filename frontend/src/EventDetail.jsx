@@ -18,8 +18,7 @@ function EventDetail({ event, onClose, onTagClick })
       })
     : null;
 
-  return
-  (
+  return (
     <div className="event-detail">
       <div className="detail-image-panel">
         <img src={event.image_url} alt={event.title} className="detail-image" />

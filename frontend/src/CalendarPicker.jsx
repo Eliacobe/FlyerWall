@@ -79,8 +79,7 @@ export default function CalendarPicker({ selectedDate, onSelect, onClear }) {
     setOpen(false);
   }
 
-  return
-  (
+  return (
     <div className="cal-wrapper" ref={wrapperRef}>
       <button
         ref={triggerRef}

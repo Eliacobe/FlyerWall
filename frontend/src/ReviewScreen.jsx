@@ -36,8 +36,7 @@ function ReviewScreen({ event, extractionError, onSave, onDiscard, discardLabel 
     }
   }
 
-  return
-  (
+  return (
     <div className="review-screen">
       <div className="review-image-panel">
         <img src={event.image_url} alt="Uploaded flyer" className="review-image" />

@@ -38,8 +38,7 @@ export default function LoginModal({ onAuth, onClose })
     }
   }
 
-  return
-  (
+  return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={e => e.stopPropagation()}>
         <div className="modal-tabs">
